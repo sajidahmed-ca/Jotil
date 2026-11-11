@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  .card-base {
+    @apply rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-700 active:bg-primary-800;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center rounded-xl bg-accent-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-accent-700 active:bg-accent-800;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center rounded-xl border-2 border-primary-600 px-6 py-3 text-sm font-semibold text-primary-600 transition-all hover:bg-primary-600 hover:text-white;
+  }
+
+  .difficulty-bar {
+    @apply h-3 rounded-full transition-all duration-500;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20 transition-colors;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

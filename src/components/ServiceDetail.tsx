@@ -13,7 +13,14 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import clsx from 'clsx';
-import { services, CORE_SERVICES, type Service, type CoreServiceId } from '../data/jotilData';
+import { services, CORE_SERVICES, type CoreServiceId } from '../data/jotilData';
+import RatingStars from './RatingStars';
+import {
+  formatRating,
+  getRatingBadgeClasses,
+  getRatingBarClass,
+  getRatingPillClasses,
+} from '../utils/rating';
 
 interface ServiceDetailProps {
   serviceId: CoreServiceId;
@@ -35,24 +42,6 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
       </div>
     );
   }
-
-  const getDifficultyColor = (score: number) => {
-    if (score <= 40) return 'text-green-600 bg-green-50 border-green-200';
-    if (score <= 65) return 'text-amber-600 bg-amber-50 border-amber-200';
-    return 'text-red-600 bg-red-50 border-red-200';
-  };
-
-  const getDifficultyBarColor = (score: number) => {
-    if (score <= 40) return 'bg-green-500';
-    if (score <= 65) return 'bg-amber-500';
-    return 'bg-red-500';
-  };
-
-  const getRegionDifficultyBg = (d: number) => {
-    if (d <= 40) return 'bg-green-100 text-green-800';
-    if (d <= 65) return 'bg-amber-100 text-amber-800';
-    return 'bg-red-100 text-red-800';
-  };
 
   const coreServices = services.filter((s) => CORE_SERVICES.includes(s.id as CoreServiceId));
 
@@ -92,14 +81,14 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
         <div className="flex items-start justify-between flex-wrap gap-4 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl sm:text-4xl font-bold text-primary-900">
+              <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">
                 {service.name}
               </h1>
               <span className={clsx(
                 'rounded-full px-3 py-1 text-xs font-bold border',
-                getDifficultyColor(service.difficultyScore)
+                getRatingBadgeClasses(service.ratingScore)
               )}>
-                {service.difficultyLabel}
+                {service.ratingLabel}
               </span>
             </div>
             <p className="mt-2 text-slate-600 max-w-xl">
@@ -113,7 +102,7 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
             onClick={onReport}
             className="btn-accent"
           >
-            Share My Experience
+            Share Your Experience
           </button>
         </div>
 
@@ -161,86 +150,89 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
 
         {/* Community Dashboard */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-primary-900 mb-6 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-accent-600" />
             Community Dashboard
           </h2>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
             <DashCard
-              icon={<Shield className="h-5 w-5" />}
-              label="Difficulty Score"
-              value={`${service.difficultyScore}/100`}
-              sub={service.difficultyLabel}
-              className={getDifficultyColor(service.difficultyScore)}
+              icon={<Star className="h-5 w-5" />}
+              label="Rating"
+              value={`${formatRating(service.ratingScore)} / 5`}
+              sub={service.ratingLabel}
+              className={getRatingBadgeClasses(service.ratingScore)}
             />
             <DashCard
               icon={<Users className="h-5 w-5" />}
               label="Total Reports"
               value={`${service.reportsCount}`}
               sub="Experiences submitted"
-              className="text-blue-600 bg-blue-50 border-blue-200"
+              className="text-primary-700 bg-primary-50 border-primary-200"
             />
             <DashCard
               icon={<Clock className="h-5 w-5" />}
               label="Avg. Time"
               value={`${service.avgDays} days`}
               sub="at office"
-              className="text-purple-600 bg-purple-50 border-purple-200"
+              className="text-slate-700 bg-slate-100 border-slate-200"
             />
             <DashCard
               icon={<DollarSign className="h-5 w-5" />}
               label="Avg. Visits"
               value={`${service.avgVisits}`}
               sub="office visits"
-              className="text-emerald-600 bg-emerald-50 border-emerald-200"
+              className="text-primary-700 bg-primary-50 border-primary-200"
             />
           </div>
 
-          {/* Difficulty Score Visual */}
+          {/* Rating Visual */}
           <div className="rounded-2xl border border-slate-200 bg-white p-6 mb-8">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold text-primary-900">
-                Jotil Difficulty Score
+              <h3 className="font-bold text-slate-900">
+                Jotil Rating
               </h3>
-              <span className={clsx('text-2xl font-bold px-3 py-1 rounded-lg border', getDifficultyColor(service.difficultyScore))}>
-                {service.difficultyScore}
-              </span>
+              <div className="flex items-center gap-3">
+                <RatingStars score={service.ratingScore} size="lg" showValue={false} />
+                <span className={clsx('text-2xl font-bold px-3 py-1 rounded-lg border', getRatingBadgeClasses(service.ratingScore))}>
+                  {formatRating(service.ratingScore)}
+                </span>
+              </div>
             </div>
             <div className="h-4 w-full rounded-full bg-slate-100 overflow-hidden">
               <div
-                className={clsx('difficulty-bar', getDifficultyBarColor(service.difficultyScore))}
-                style={{ width: `${service.difficultyScore}%` }}
+                className={clsx('rating-bar', getRatingBarClass(service.ratingScore))}
+                style={{ width: `${service.ratingScore}%` }}
               />
             </div>
             <div className="mt-2 flex justify-between text-xs text-slate-500">
-              <span>Easy (0)</span>
-              <span>Medium (50)</span>
-              <span>Very Hard (100)</span>
+              <span>Very Bad (1)</span>
+              <span>Average (3)</span>
+              <span>Excellent (5)</span>
             </div>
             <p className="mt-3 text-sm text-slate-500">
-              This score is calculated based on user reports — considering cost, visits, time, and types of problems encountered.
+              This rating is calculated from user reports — considering cost, visits, time, and types of problems encountered. Higher is better.
             </p>
           </div>
         </div>
 
         {/* Official vs Community Reality */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-primary-900 mb-6 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-amber-500" />
             Official Steps vs Community Reality
           </h2>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border border-blue-200 bg-blue-50 p-5">
-              <h3 className="font-bold text-blue-800 mb-3 flex items-center gap-2">
+            <div className="rounded-2xl border border-primary-200 bg-primary-50 p-5">
+              <h3 className="font-bold text-primary-900 mb-3 flex items-center gap-2">
                 <Shield className="h-4 w-4" />
                 What They Say
               </h3>
               <ul className="space-y-2">
                 {service.officialSteps.map((step, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-blue-700">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-200 text-xs font-bold text-blue-800 mt-0.5">
+                  <li key={i} className="flex items-start gap-2 text-sm text-primary-800">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-200 text-xs font-bold text-primary-900 mt-0.5">
                       {i + 1}
                     </span>
                     {step}
@@ -248,15 +240,15 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
                 ))}
               </ul>
             </div>
-            <div className="rounded-2xl border border-red-200 bg-red-50 p-5">
-              <h3 className="font-bold text-red-800 mb-3 flex items-center gap-2">
+            <div className="rounded-2xl border border-accent-200 bg-accent-50 p-5">
+              <h3 className="font-bold text-accent-900 mb-3 flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 What Actually Happens
               </h3>
               <ul className="space-y-2">
                 {service.communityReality.map((point, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-red-700">
-                    <span className="text-red-400 mt-0.5 shrink-0">!</span>
+                  <li key={i} className="flex items-start gap-2 text-sm text-accent-800">
+                    <span className="text-accent-500 mt-0.5 shrink-0">!</span>
                     {point}
                   </li>
                 ))}
@@ -267,8 +259,8 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
 
         {/* Common Problems */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-primary-900 mb-6 flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-red-500" />
+          <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-accent-600" />
             Common Problems
           </h2>
 
@@ -285,8 +277,8 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
                   <div
                     className={clsx(
                       'difficulty-bar',
-                      problem.percentage >= 60 ? 'bg-red-400' :
-                      problem.percentage >= 40 ? 'bg-amber-400' : 'bg-green-400'
+                      problem.percentage >= 60 ? 'bg-accent-500' :
+                      problem.percentage >= 40 ? 'bg-amber-500' : 'bg-primary-500'
                     )}
                     style={{ width: `${problem.percentage}%` }}
                   />
@@ -298,7 +290,7 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
 
         {/* Regional Comparison */}
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-primary-900 mb-6 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
             <MapPin className="h-5 w-5 text-primary-600" />
             Regional Comparison
           </h2>
@@ -312,7 +304,7 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
                       Region
                     </th>
                     <th className="px-5 py-3 text-center font-semibold text-slate-700">
-                      Difficulty
+                      Rating
                     </th>
                     <th className="px-5 py-3 text-center font-semibold text-slate-700">
                       Avg. Cost
@@ -332,8 +324,8 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
                         {region.name}
                       </td>
                       <td className="px-5 py-3.5 text-center">
-                        <span className={clsx('inline-block rounded-full px-3 py-1 text-xs font-bold', getRegionDifficultyBg(region.difficulty))}>
-                          {region.difficulty}/100
+                        <span className={clsx('inline-block rounded-full px-3 py-1 text-xs font-bold', getRatingPillClasses(region.rating))}>
+                          {formatRating(region.rating)}/5
                         </span>
                       </td>
                       <td className="px-5 py-3.5 text-center text-slate-600">{region.avgCost}</td>
@@ -350,7 +342,7 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
         {/* Anonymous Experience Feed */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-primary-900 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
               <MessageCircle className="h-5 w-5 text-accent-600" />
               Anonymous Experiences
             </h2>
@@ -383,7 +375,7 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
                     </span>
                     <span className="flex items-center gap-1">
                       <Star className="h-3 w-3" />
-                      Clarity: {exp.clarityScore}/5
+                      Rating: {exp.rating}/5
                     </span>
                   </div>
                 </div>
@@ -392,21 +384,21 @@ export default function ServiceDetail({ serviceId, onBack, onReport, onSwitchSer
 
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {exp.problems.map((p, pi) => (
-                    <span key={pi} className="rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-600">
+                    <span key={pi} className="rounded-full bg-accent-50 px-2.5 py-0.5 text-xs font-medium text-accent-700">
                       {p}
                     </span>
                   ))}
                 </div>
 
                 <div className="mt-3 flex items-center gap-2">
-                  <span className="text-xs text-slate-500">Difficulty:</span>
+                  <span className="text-xs text-slate-500">Rating:</span>
                   <div className="h-2 w-24 rounded-full bg-slate-100 overflow-hidden">
                     <div
-                      className={clsx('difficulty-bar', getDifficultyBarColor(exp.difficultyScore))}
-                      style={{ width: `${exp.difficultyScore}%` }}
+                      className={clsx('rating-bar', getRatingBarClass(exp.ratingScore))}
+                      style={{ width: `${exp.ratingScore}%` }}
                     />
                   </div>
-                  <span className="text-xs font-bold text-slate-600">{exp.difficultyScore}/100</span>
+                  <span className="text-xs font-bold text-slate-600">{exp.rating}/5</span>
                 </div>
               </div>
             ))}
@@ -432,9 +424,9 @@ function DashCard({
 }) {
   return (
     <div className={clsx('rounded-2xl border p-5', className)}>
-      <div className="flex items-center gap-2 mb-2">{icon}<span className="text-sm font-medium opacity-80">{label}</span></div>
+      <div className="flex items-center gap-2 mb-2">{icon}<span className="text-sm font-medium">{label}</span></div>
       <div className="text-2xl font-bold">{value}</div>
-      <div className="text-xs opacity-60 mt-1">{sub}</div>
+      <div className="mt-1 text-xs">{sub}</div>
     </div>
   );
 }

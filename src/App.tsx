@@ -1,14 +1,19 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import WhatIsJotil from './components/WhatIsJotil';
 import ExploreServices from './components/ExploreServices';
 import ServiceDetail from './components/ServiceDetail';
 import ReportExperienceModal from './components/ReportExperienceModal';
+import ShareExperience from './components/ShareExperience';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService';
+import Contact from './components/Contact';
+import About from './components/About';
 import Footer from './components/Footer';
 import { CORE_SERVICES, type CoreServiceId } from './data/jotilData';
-
-type Page = 'home' | 'service' | 'report' | 'how-it-works';
+import type { Page } from './types';
+import { migrateStoredReports } from './utils/reportStorage';
 
 const serviceAliasMap: Record<string, string> = {
   'trade license': 'trade-license',
@@ -33,25 +38,93 @@ const serviceAliasMap: Record<string, string> = {
   'জমির মিউটেশন': 'land-mutation',
 };
 
+const pagePaths: Record<Page, string> = {
+  'home': '/',
+  'service': '/services/trade-license',
+  'how-it-works': '/how-it-works',
+  'share-experience': '/share-experience',
+  'privacy-policy': '/privacy-policy',
+  'terms-of-service': '/terms-of-service',
+  'contact': '/contact',
+  'about': '/about',
+};
+
+const pathPages: Record<string, Page> = {
+  '/': 'home',
+  '/how-it-works': 'how-it-works',
+  '/share-experience': 'share-experience',
+  '/privacy-policy': 'privacy-policy',
+  '/terms-of-service': 'terms-of-service',
+  '/contact': 'contact',
+  '/about': 'about',
+};
+
+interface Route {
+  page: Page;
+  serviceId?: CoreServiceId;
+}
+
+function parseRoute(pathname: string): Route {
+  const path = pathname.replace(/\/+$/, '') || '/';
+
+  if (path.startsWith('/services/')) {
+    const serviceId = path.split('/')[2];
+    if (CORE_SERVICES.includes(serviceId as CoreServiceId)) {
+      return { page: 'service', serviceId: serviceId as CoreServiceId };
+    }
+    return { page: 'home' };
+  }
+
+  return { page: pathPages[path] ?? 'home' };
+}
+
 function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('home');
-  const [activeServiceId, setActiveServiceId] = useState<CoreServiceId>('trade-license');
+  const initialRoute = parseRoute(window.location.pathname);
+  const [currentPage, setCurrentPage] = useState<Page>(initialRoute.page);
+  const [activeServiceId, setActiveServiceId] = useState<CoreServiceId>(initialRoute.serviceId ?? 'trade-license');
   const [showReportModal, setShowReportModal] = useState(false);
 
-  const handleNavigate = (page: Page) => {
+  useEffect(() => {
+    migrateStoredReports();
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const route = parseRoute(window.location.pathname);
+      setCurrentPage(route.page);
+      if (route.serviceId) {
+        setActiveServiceId(route.serviceId);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigate = (page: Page, serviceId?: CoreServiceId) => {
+    const nextServiceId = serviceId ?? activeServiceId;
+    const path = page === 'service' ? `/services/${nextServiceId}` : pagePaths[page];
+
+    window.history.pushState({}, '', path);
     setCurrentPage(page);
+    if (serviceId) {
+      setActiveServiceId(serviceId);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSearch = useCallback((query: string) => {
+  const handleNavigate = (page: Page) => {
+    navigate(page);
+  };
+
+  const handleSearch = (query: string) => {
     const normalizedQuery = query.toLowerCase().trim();
 
     if (serviceAliasMap[normalizedQuery]) {
       const id = serviceAliasMap[normalizedQuery];
       if (CORE_SERVICES.includes(id as CoreServiceId)) {
-        setActiveServiceId(id as CoreServiceId);
-        setCurrentPage('service');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        navigate('service', id as CoreServiceId);
         return;
       }
     }
@@ -59,31 +132,24 @@ function App() {
     for (const [alias, id] of Object.entries(serviceAliasMap)) {
       if (normalizedQuery.includes(alias) || alias.includes(normalizedQuery)) {
         if (CORE_SERVICES.includes(id as CoreServiceId)) {
-          setActiveServiceId(id as CoreServiceId);
-          setCurrentPage('service');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          navigate('service', id as CoreServiceId);
           return;
         }
       }
     }
 
-    setActiveServiceId('trade-license');
-    setCurrentPage('service');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+    navigate('service', 'trade-license');
+  };
 
-  const handleSelectService = useCallback((serviceId: string) => {
+  const handleSelectService = (serviceId: string) => {
     if (CORE_SERVICES.includes(serviceId as CoreServiceId)) {
-      setActiveServiceId(serviceId as CoreServiceId);
-      setCurrentPage('service');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      navigate('service', serviceId as CoreServiceId);
     }
-  }, []);
+  };
 
-  const handleSwitchService = useCallback((id: CoreServiceId) => {
-    setActiveServiceId(id);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  const handleSwitchService = (id: CoreServiceId) => {
+    navigate('service', id);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
@@ -118,18 +184,33 @@ function App() {
         {currentPage === 'how-it-works' && (
           <WhatIsJotil />
         )}
+
+        {currentPage === 'share-experience' && (
+          <ShareExperience />
+        )}
+
+        {currentPage === 'privacy-policy' && (
+          <PrivacyPolicy />
+        )}
+
+        {currentPage === 'terms-of-service' && (
+          <TermsOfService />
+        )}
+
+        {currentPage === 'contact' && (
+          <Contact />
+        )}
+
+        {currentPage === 'about' && (
+          <About onNavigate={handleNavigate} />
+        )}
       </main>
 
       <Footer />
 
       <ReportExperienceModal
-        isOpen={showReportModal || currentPage === 'report'}
-        onClose={() => {
-          setShowReportModal(false);
-          if (currentPage === 'report') {
-            setCurrentPage('home');
-          }
-        }}
+        isOpen={showReportModal}
+        onClose={() => setShowReportModal(false)}
       />
     </div>
   );

@@ -13,8 +13,8 @@ export interface Service {
   avgVisits: number;
   costRange: string;
   costRangeBn: string;
-  difficultyScore: number;
-  difficultyLabel: 'Easy' | 'Moderate' | 'Hard';
+  ratingScore: number;
+  ratingLabel: 'Good' | 'Average' | 'Poor';
   topProblems: Problem[];
   officialSteps: string[];
   communityReality: string[];
@@ -32,7 +32,7 @@ export interface Problem {
 export interface Region {
   name: string;
   nameBn: string;
-  difficulty: number;
+  rating: number;
   avgCost: string;
   avgVisits: number;
   avgDays: number;
@@ -45,8 +45,8 @@ export interface Experience {
   date: string;
   cost: number;
   visits: number;
-  clarityScore: number;
-  difficultyScore: number;
+  rating: number;
+  ratingScore: number;
   problems: string[];
   comment: string;
   dateBn: string;
@@ -79,8 +79,8 @@ export const services: Service[] = [
     avgVisits: 2.6,
     costRange: 'BDT 1,200 – BDT 2,500',
     costRangeBn: '৳১,২০০ – ৳২,৫০০',
-    difficultyScore: 62,
-    difficultyLabel: 'Moderate',
+    ratingScore: 38,
+    ratingLabel: 'Poor',
     topProblems: [
       { label: 'Long waiting time at office', labelBn: 'অফিসে দীর্ঘ অপেক্ষার সময়', percentage: 78 },
       { label: 'Unclear document requirements', labelBn: 'অস্পষ্ট নথির প্রয়োজনীয়তা', percentage: 65 },
@@ -104,39 +104,39 @@ export const services: Service[] = [
       'Rural offices tend to be faster but less transparent about fees',
     ],
     regionalComparison: [
-      { name: 'Dhaka', nameBn: 'ঢাকা', difficulty: 68, avgCost: 'BDT 2,100', avgVisits: 3.0, avgDays: 9 },
-      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', difficulty: 63, avgCost: 'BDT 1,800', avgVisits: 2.8, avgDays: 8 },
-      { name: 'Gazipur', nameBn: 'গাজীপুর', difficulty: 65, avgCost: 'BDT 1,900', avgVisits: 2.9, avgDays: 8 },
-      { name: 'Sylhet', nameBn: 'সিলেট', difficulty: 56, avgCost: 'BDT 1,500', avgVisits: 2.3, avgDays: 7 },
+      { name: 'Dhaka', nameBn: 'ঢাকা', rating: 32, avgCost: 'BDT 2,100', avgVisits: 3.0, avgDays: 9 },
+      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', rating: 37, avgCost: 'BDT 1,800', avgVisits: 2.8, avgDays: 8 },
+      { name: 'Gazipur', nameBn: 'গাজীপুর', rating: 35, avgCost: 'BDT 1,900', avgVisits: 2.9, avgDays: 8 },
+      { name: 'Sylhet', nameBn: 'সিলেট', rating: 44, avgCost: 'BDT 1,500', avgVisits: 2.3, avgDays: 7 },
     ],
     experiences: [
       {
         id: 1, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-10', dateBn: '১০ আগস্ট, ২০২৬',
-        cost: 2200, visits: 3, clarityScore: 3, difficultyScore: 72,
+        cost: 2200, visits: 3, rating: 3, ratingScore: 60,
         problems: ['Long wait', 'Hidden fees'],
         comment: 'Had to visit 3 times. First visit they said missing a document, second time they asked for additional fee not listed anywhere. Very frustrating experience.',
       },
       {
         id: 2, region: 'Chattogram', regionBn: 'চট্টগ্রাম', date: '2026-07-25', dateBn: '২৫ জুলাই, ২০২৬',
-        cost: 1800, visits: 2, clarityScore: 4, difficultyScore: 55,
+        cost: 1800, visits: 2, rating: 4, ratingScore: 80,
         problems: ['Unclear requirements'],
         comment: 'Reasonably smooth. Only issue was the document checklist was outdated on the website. In person, they were helpful.',
       },
       {
         id: 3, region: 'Gazipur', regionBn: 'গাজীপুর', date: '2026-08-01', dateBn: '১ আগস্ট, ২০২৬',
-        cost: 1900, visits: 3, clarityScore: 2, difficultyScore: 65,
+        cost: 1900, visits: 3, rating: 2, ratingScore: 40,
         problems: ['Long wait', 'Multiple visits', 'Staff unhelpful'],
         comment: 'Very chaotic. No clear queue system. Staff told me to come back tomorrow without giving a specific reason.',
       },
       {
         id: 4, region: 'Sylhet', regionBn: 'সিলেট', date: '2026-07-18', dateBn: '১৮ জুলাই, ২০২৬',
-        cost: 1400, visits: 2, clarityScore: 4, difficultyScore: 48,
+        cost: 1400, visits: 2, rating: 4, ratingScore: 80,
         problems: ['Unclear requirements'],
         comment: 'Not bad overall. The online form was helpful but some fields were confusing. In-person experience was decent.',
       },
       {
         id: 5, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-15', dateBn: '১৫ আগস্ট, ২০২৬',
-        cost: 2500, visits: 4, clarityScore: 2, difficultyScore: 80,
+        cost: 2500, visits: 4, rating: 2, ratingScore: 40,
         problems: ['Long wait', 'Hidden fees', 'Multiple visits', 'Staff unhelpful'],
         comment: 'Worst experience. The office was overcrowded. Each time I visited, they asked for something different. Felt like there is no standard process.',
       },
@@ -189,8 +189,8 @@ export const services: Service[] = [
     avgVisits: 3.2,
     costRange: 'BDT 3,000 – BDT 8,050',
     costRangeBn: '৳৩,০০০ – ৳৮,০৫০',
-    difficultyScore: 74,
-    difficultyLabel: 'Hard',
+    ratingScore: 26,
+    ratingLabel: 'Poor',
     topProblems: [
       { label: 'Online system crashes frequently', labelBn: 'অনলাইন সিস্টেম ঘন ঘন ক্র্যাশ করে', percentage: 82 },
       { label: 'Long processing delays', labelBn: 'দীর্ঘ প্রক্রিয়াকরণ বিলম্ব', percentage: 73 },
@@ -214,39 +214,39 @@ export const services: Service[] = [
       'Premium express service costs significantly more but saves weeks',
     ],
     regionalComparison: [
-      { name: 'Dhaka', nameBn: 'ঢাকা', difficulty: 80, avgCost: 'BDT 5,500', avgVisits: 3.5, avgDays: 16 },
-      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', difficulty: 72, avgCost: 'BDT 4,800', avgVisits: 3.0, avgDays: 14 },
-      { name: 'Gazipur', nameBn: 'গাজীপুর', difficulty: 75, avgCost: 'BDT 5,200', avgVisits: 3.3, avgDays: 15 },
-      { name: 'Sylhet', nameBn: 'সিলেট', difficulty: 68, avgCost: 'BDT 4,200', avgVisits: 2.8, avgDays: 12 },
+      { name: 'Dhaka', nameBn: 'ঢাকা', rating: 20, avgCost: 'BDT 5,500', avgVisits: 3.5, avgDays: 16 },
+      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', rating: 28, avgCost: 'BDT 4,800', avgVisits: 3.0, avgDays: 14 },
+      { name: 'Gazipur', nameBn: 'গাজীপুর', rating: 25, avgCost: 'BDT 5,200', avgVisits: 3.3, avgDays: 15 },
+      { name: 'Sylhet', nameBn: 'সিলেট', rating: 32, avgCost: 'BDT 4,200', avgVisits: 2.8, avgDays: 12 },
     ],
     experiences: [
       {
         id: 1, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-12', dateBn: '১২ আগস্ট, ২০২৬',
-        cost: 5500, visits: 3, clarityScore: 2, difficultyScore: 78,
+        cost: 5500, visits: 3, rating: 2, ratingScore: 40,
         problems: ['Online system crash', 'Long wait', 'Multiple visits'],
         comment: 'The online portal crashed 5 times before I could submit. Got an appointment for 3 weeks later. At the office, waited 4 hours despite having an appointment.',
       },
       {
         id: 2, region: 'Chattogram', regionBn: 'চট্টগ্রাম', date: '2026-07-20', dateBn: '২০ জুলাই, ২০২৬',
-        cost: 4800, visits: 2, clarityScore: 3, difficultyScore: 65,
+        cost: 4800, visits: 2, rating: 3, ratingScore: 60,
         problems: ['Long wait'],
         comment: 'Better than Dhaka. Booked appointment online successfully. Wait time was about 2 hours. Passport arrived in 12 days.',
       },
       {
         id: 3, region: 'Gazipur', regionBn: 'গাজীপুর', date: '2026-08-05', dateBn: '৫ আগস্ট, ২০২৬',
-        cost: 5200, visits: 4, clarityScore: 2, difficultyScore: 82,
+        cost: 5200, visits: 4, rating: 2, ratingScore: 40,
         problems: ['Online system crash', 'Multiple visits', 'Document issues'],
         comment: 'Submitted application twice because the first one "got lost" in the system. Had to visit 4 times total. Took 18 days to receive.',
       },
       {
         id: 4, region: 'Sylhet', regionBn: 'সিলেট', date: '2026-07-28', dateBn: '২৮ জুলাই, ২০২৬',
-        cost: 4200, visits: 2, clarityScore: 4, difficultyScore: 52,
+        cost: 4200, visits: 2, rating: 4, ratingScore: 80,
         problems: ['Unclear requirements'],
         comment: 'Smoothest experience I have heard of. Online system worked on first try. Office staff were professional. Got passport in 10 days.',
       },
       {
         id: 5, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-18', dateBn: '১৮ আগস্ট, ২০২৬',
-        cost: 8050, visits: 3, clarityScore: 3, difficultyScore: 70,
+        cost: 8050, visits: 3, rating: 3, ratingScore: 60,
         problems: ['Long wait', 'High cost'],
         comment: 'Paid for express service to speed things up. Still took 9 days. The regular service reportedly takes 3+ weeks right now.',
       },
@@ -299,8 +299,8 @@ export const services: Service[] = [
     avgVisits: 3.8,
     costRange: 'BDT 0 – BDT 500',
     costRangeBn: '৳০ – ৳৫০০',
-    difficultyScore: 69,
-    difficultyLabel: 'Moderate',
+    ratingScore: 31,
+    ratingLabel: 'Poor',
     topProblems: [
       { label: 'Extremely long wait for card delivery', labelBn: 'কার্ড ডেলিভারির জন্য অত্যন্ত দীর্ঘ অপেক্ষা', percentage: 85 },
       { label: 'Information errors on printed card', labelBn: 'মুদ্রিত কার্ডে তথ্য ত্রুটি', percentage: 67 },
@@ -324,39 +324,39 @@ export const services: Service[] = [
       'Some people report waiting 6+ months without receiving their card',
     ],
     regionalComparison: [
-      { name: 'Dhaka', nameBn: 'ঢাকা', difficulty: 74, avgCost: 'BDT 200', avgVisits: 4.0, avgDays: 24 },
-      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', difficulty: 70, avgCost: 'BDT 150', avgVisits: 3.5, avgDays: 22 },
-      { name: 'Gazipur', nameBn: 'গাজীপুর', difficulty: 72, avgCost: 'BDT 200', avgVisits: 3.8, avgDays: 23 },
-      { name: 'Sylhet', nameBn: 'সিলেট', difficulty: 65, avgCost: 'BDT 100', avgVisits: 3.2, avgDays: 18 },
+      { name: 'Dhaka', nameBn: 'ঢাকা', rating: 26, avgCost: 'BDT 200', avgVisits: 4.0, avgDays: 24 },
+      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', rating: 30, avgCost: 'BDT 150', avgVisits: 3.5, avgDays: 22 },
+      { name: 'Gazipur', nameBn: 'গাজীপুর', rating: 28, avgCost: 'BDT 200', avgVisits: 3.8, avgDays: 23 },
+      { name: 'Sylhet', nameBn: 'সিলেট', rating: 35, avgCost: 'BDT 100', avgVisits: 3.2, avgDays: 18 },
     ],
     experiences: [
       {
         id: 1, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-08', dateBn: '৮ আগস্ট, ২০২৬',
-        cost: 200, visits: 4, clarityScore: 2, difficultyScore: 78,
+        cost: 200, visits: 4, rating: 2, ratingScore: 40,
         problems: ['Long delivery wait', 'Multiple visits', 'Online issues'],
         comment: 'Applied online in March. Still waiting for my card in August. Visited the office 4 times and each time they say "next week".',
       },
       {
         id: 2, region: 'Chattogram', regionBn: 'চট্টগ্রাম', date: '2026-07-30', dateBn: '৩০ জুলাই, ২০২৬',
-        cost: 150, visits: 3, clarityScore: 3, difficultyScore: 68,
+        cost: 150, visits: 3, rating: 3, ratingScore: 60,
         problems: ['Information errors', 'Multiple visits'],
         comment: 'Card arrived after 3 weeks but my father\'s name was misspelled. Now I need to apply for correction — which starts the whole process over.',
       },
       {
         id: 3, region: 'Gazipur', regionBn: 'গাজীপুর', date: '2026-08-14', dateBn: '১৪ আগস্ট, ২০২৬',
-        cost: 0, visits: 5, clarityScore: 2, difficultyScore: 85,
+        cost: 0, visits: 5, rating: 2, ratingScore: 40,
         problems: ['Online issues', 'Multiple visits', 'Long wait'],
         comment: 'The most frustrating government service I have experienced. Online portal does not work on mobile. Office staff say different things each visit.',
       },
       {
         id: 4, region: 'Sylhet', regionBn: 'সিলেট', date: '2026-07-15', dateBn: '১৫ জুলাই, ২০২৬',
-        cost: 100, visits: 2, clarityScore: 4, difficultyScore: 50,
+        cost: 100, visits: 2, rating: 4, ratingScore: 80,
         problems: ['Unclear requirements'],
         comment: 'Actually not too bad. Got my card in about 2 weeks. The local office was organized and helpful. Maybe I was lucky.',
       },
       {
         id: 5, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-20', dateBn: '২০ আগস্ট, ২০২৬',
-        cost: 500, visits: 3, clarityScore: 3, difficultyScore: 72,
+        cost: 500, visits: 3, rating: 3, ratingScore: 60,
         problems: ['High cost', 'Unclear process'],
         comment: 'Applied for smart card replacement. Officially free, but had to pay "service charges" at the office. Card took 5 weeks.',
       },
@@ -409,8 +409,8 @@ export const services: Service[] = [
     avgVisits: 4.1,
     costRange: 'BDT 1,500 – BDT 5,500',
     costRangeBn: '৳১,৫০০ – ৳৫,৫০০',
-    difficultyScore: 78,
-    difficultyLabel: 'Hard',
+    ratingScore: 22,
+    ratingLabel: 'Poor',
     topProblems: [
       { label: 'Written and practical test scheduling chaos', labelBn: 'লিখিত ও প্র্যাকটিক্যাল পরীক্ষার শিডিউলিংয়ে গোলযোগ', percentage: 84 },
       { label: 'Long delays between application stages', labelBn: 'আবেদন পর্যায়ের মধ্যে দীর্ঘ বিলম্ব', percentage: 76 },
@@ -435,39 +435,39 @@ export const services: Service[] = [
       'Many people report being approached by middlemen offering to "expedite" for a fee',
     ],
     regionalComparison: [
-      { name: 'Dhaka', nameBn: 'ঢাকা', difficulty: 82, avgCost: 'BDT 4,200', avgVisits: 4.5, avgDays: 35 },
-      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', difficulty: 76, avgCost: 'BDT 3,500', avgVisits: 4.0, avgDays: 30 },
-      { name: 'Gazipur', nameBn: 'গাজীপুর', difficulty: 79, avgCost: 'BDT 3,800', avgVisits: 4.2, avgDays: 32 },
-      { name: 'Sylhet', nameBn: 'সিলেট', difficulty: 72, avgCost: 'BDT 3,000', avgVisits: 3.8, avgDays: 28 },
+      { name: 'Dhaka', nameBn: 'ঢাকা', rating: 18, avgCost: 'BDT 4,200', avgVisits: 4.5, avgDays: 35 },
+      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', rating: 24, avgCost: 'BDT 3,500', avgVisits: 4.0, avgDays: 30 },
+      { name: 'Gazipur', nameBn: 'গাজীপুর', rating: 21, avgCost: 'BDT 3,800', avgVisits: 4.2, avgDays: 32 },
+      { name: 'Sylhet', nameBn: 'সিলেট', rating: 28, avgCost: 'BDT 3,000', avgVisits: 3.8, avgDays: 28 },
     ],
     experiences: [
       {
         id: 1, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-06', dateBn: '৬ আগস্ট, ২০২৬',
-        cost: 4200, visits: 5, clarityScore: 2, difficultyScore: 85,
+        cost: 4200, visits: 5, rating: 2, ratingScore: 40,
         problems: ['Long wait', 'Multiple visits', 'Corruption'],
         comment: 'Took 2 months from start to finish. Written test was scheduled 6 weeks out. At the office, someone offered to "help" for extra BDT 2,000.',
       },
       {
         id: 2, region: 'Chattogram', regionBn: 'চট্টগ্রাম', date: '2026-07-22', dateBn: '২২ জুলাই, ২০২৬',
-        cost: 3500, visits: 4, clarityScore: 3, difficultyScore: 72,
+        cost: 3500, visits: 4, rating: 3, ratingScore: 60,
         problems: ['Long processing', 'Unclear requirements'],
         comment: 'The BRTA office was relatively organized. Main issue was figuring out which hospital does the medical certificate. Took about 4 weeks total.',
       },
       {
         id: 3, region: 'Gazipur', regionBn: 'গাজীপুর', date: '2026-08-11', dateBn: '১১ আগস্ট, ২০২৬',
-        cost: 3800, visits: 4, clarityScore: 2, difficultyScore: 78,
+        cost: 3800, visits: 4, rating: 2, ratingScore: 40,
         problems: ['Long wait', 'Medical issues', 'Corruption'],
         comment: 'Medical certificate was rejected first time because the hospital was "not on the approved list". Had to redo it at a different hospital.',
       },
       {
         id: 4, region: 'Sylhet', regionBn: 'সিলেট', date: '2026-07-10', dateBn: '১০ জুলাই, ২০২৬',
-        cost: 3000, visits: 3, clarityScore: 4, difficultyScore: 60,
+        cost: 3000, visits: 3, rating: 4, ratingScore: 80,
         problems: ['Long wait'],
         comment: 'Relatively smooth process. Got my learner\'s permit in 2 weeks. Professional license took longer but was straightforward.',
       },
       {
         id: 5, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-19', dateBn: '১৯ আগস্ট, ২০২৬',
-        cost: 5500, visits: 5, clarityScore: 2, difficultyScore: 88,
+        cost: 5500, visits: 5, rating: 2, ratingScore: 40,
         problems: ['Corruption', 'Multiple visits', 'Long wait', 'Online issues'],
         comment: 'Nightmare experience. Online portal would not accept my photos. Had to visit the office 5 times. Final straw was being told to come back "next week" 3 weeks in a row.',
       },
@@ -522,8 +522,8 @@ export const services: Service[] = [
     avgVisits: 2.4,
     costRange: 'BDT 0 – BDT 300',
     costRangeBn: '৳০ – ৳৩০০',
-    difficultyScore: 45,
-    difficultyLabel: 'Easy',
+    ratingScore: 55,
+    ratingLabel: 'Average',
     topProblems: [
       { label: 'Slow processing at registrar office', labelBn: 'রেজিস্ট্রার অফিসে ধীর প্রক্রিয়াকরণ', percentage: 62 },
       { label: 'Missing or incorrect records', labelBn: 'অনুপস্থিত বা ভুল রেকর্ড', percentage: 55 },
@@ -547,39 +547,39 @@ export const services: Service[] = [
       'Correction requests can take months due to "verification" delays',
     ],
     regionalComparison: [
-      { name: 'Dhaka', nameBn: 'ঢাকা', difficulty: 50, avgCost: 'BDT 150', avgVisits: 2.5, avgDays: 14 },
-      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', difficulty: 48, avgCost: 'BDT 120', avgVisits: 2.3, avgDays: 12 },
-      { name: 'Gazipur', nameBn: 'গাজীপুর', difficulty: 47, avgCost: 'BDT 130', avgVisits: 2.4, avgDays: 13 },
-      { name: 'Sylhet', nameBn: 'সিলেট', difficulty: 42, avgCost: 'BDT 100', avgVisits: 2.2, avgDays: 10 },
+      { name: 'Dhaka', nameBn: 'ঢাকা', rating: 50, avgCost: 'BDT 150', avgVisits: 2.5, avgDays: 14 },
+      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', rating: 52, avgCost: 'BDT 120', avgVisits: 2.3, avgDays: 12 },
+      { name: 'Gazipur', nameBn: 'গাজীপুর', rating: 53, avgCost: 'BDT 130', avgVisits: 2.4, avgDays: 13 },
+      { name: 'Sylhet', nameBn: 'সিলেট', rating: 58, avgCost: 'BDT 100', avgVisits: 2.2, avgDays: 10 },
     ],
     experiences: [
       {
         id: 1, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-09', dateBn: '৯ আগস্ট, ২০২৬',
-        cost: 150, visits: 2, clarityScore: 4, difficultyScore: 45,
+        cost: 150, visits: 2, rating: 4, ratingScore: 80,
         problems: ['Slow processing'],
         comment: 'Registered my newborn\'s birth. Took 2 visits because the first time the office was closed. Otherwise smooth.',
       },
       {
         id: 2, region: 'Chattogram', regionBn: 'চট্টগ্রাম', date: '2026-07-28', dateBn: '২৮ জুলাই, ২০২৬',
-        cost: 120, visits: 3, clarityScore: 3, difficultyScore: 55,
+        cost: 120, visits: 3, rating: 3, ratingScore: 60,
         problems: ['Missing records', 'Multiple visits'],
         comment: 'Needed a copy of my own birth certificate. Records from 1995 were incomplete. Had to provide witness statements.',
       },
       {
         id: 3, region: 'Gazipur', regionBn: 'গাজীপুর', date: '2026-08-03', dateBn: '৩ আগস্ট, ২০২৬',
-        cost: 0, visits: 2, clarityScore: 4, difficultyScore: 38,
+        cost: 0, visits: 2, rating: 4, ratingScore: 80,
         problems: ['Unclear requirements'],
         comment: 'Free service as expected. Staff were helpful. Just had to wait a few days for processing. No complaints.',
       },
       {
         id: 4, region: 'Sylhet', regionBn: 'সিলেট', date: '2026-07-19', dateBn: '১৯ জুলাই, ২০২৬',
-        cost: 100, visits: 2, clarityScore: 3, difficultyScore: 42,
+        cost: 100, visits: 2, rating: 3, ratingScore: 60,
         problems: ['Rural office access'],
         comment: 'Had to travel 30km to the nearest registration office. No transport options available on short notice.',
       },
       {
         id: 5, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-16', dateBn: '১৬ আগস্ট, ২০২৬',
-        cost: 300, visits: 3, clarityScore: 2, difficultyScore: 58,
+        cost: 300, visits: 3, rating: 2, ratingScore: 40,
         problems: ['Information errors', 'Staff fees'],
         comment: 'Corrected a spelling error on my certificate. Simple fix but they charged BDT 300 "processing fee" and it took 3 weeks.',
       },
@@ -632,8 +632,8 @@ export const services: Service[] = [
     avgVisits: 5.0,
     costRange: 'BDT 2,000 – BDT 15,000',
     costRangeBn: '৳২,০০০ – ৳১৫,০০০',
-    difficultyScore: 92,
-    difficultyLabel: 'Hard',
+    ratingScore: 8,
+    ratingLabel: 'Poor',
     topProblems: [
       { label: 'Extreme bureaucratic delays', labelBn: 'অত্যধিক আমলাতান্ত্রিক বিলম্ব', percentage: 91 },
       { label: 'Corruption and bribery at multiple stages', labelBn: 'একাধিক পর্যায়ে দুর্নীতি ও ঘুষি', percentage: 87 },
@@ -659,39 +659,39 @@ export const services: Service[] = [
       'Many citizens hire "dalals" (brokers) to navigate the system, adding significant cost',
     ],
     regionalComparison: [
-      { name: 'Dhaka', nameBn: 'ঢাকা', difficulty: 95, avgCost: 'BDT 12,000', avgVisits: 5.5, avgDays: 52 },
-      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', difficulty: 90, avgCost: 'BDT 10,000', avgVisits: 5.0, avgDays: 48 },
-      { name: 'Gazipur', nameBn: 'গাজীপুর', difficulty: 93, avgCost: 'BDT 11,000', avgVisits: 5.2, avgDays: 50 },
-      { name: 'Sylhet', nameBn: 'সিলেট', difficulty: 88, avgCost: 'BDT 8,500', avgVisits: 4.5, avgDays: 42 },
+      { name: 'Dhaka', nameBn: 'ঢাকা', rating: 5, avgCost: 'BDT 12,000', avgVisits: 5.5, avgDays: 52 },
+      { name: 'Chattogram', nameBn: 'চট্টগ্রাম', rating: 10, avgCost: 'BDT 10,000', avgVisits: 5.0, avgDays: 48 },
+      { name: 'Gazipur', nameBn: 'গাজীপুর', rating: 7, avgCost: 'BDT 11,000', avgVisits: 5.2, avgDays: 50 },
+      { name: 'Sylhet', nameBn: 'সিলেট', rating: 12, avgCost: 'BDT 8,500', avgVisits: 4.5, avgDays: 42 },
     ],
     experiences: [
       {
         id: 1, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-13', dateBn: '১৩ আগস্ট, ২০২৬',
-        cost: 12000, visits: 6, clarityScore: 1, difficultyScore: 95,
+        cost: 12000, visits: 6, rating: 1, ratingScore: 20,
         problems: ['Extreme delays', 'Corruption', 'Multiple visits', 'Unclear fees'],
         comment: 'Inherited property from my father. The process took 5 months and cost BDT 12,000 officially plus at least BDT 8,000 in unofficial payments. The system is designed to be confusing.',
       },
       {
         id: 2, region: 'Chattogram', regionBn: 'চট্টগ্রাম', date: '2026-07-14', dateBn: '১৪ জুলাই, ২০২৬',
-        cost: 10000, visits: 5, clarityScore: 2, difficultyScore: 88,
+        cost: 10000, visits: 5, rating: 2, ratingScore: 40,
         problems: ['Corruption', 'Long wait', 'Complex documentation'],
         comment: 'Sold a piece of land. Mutation should have been simple but they kept asking for additional documents not on any published list. Suspect it was deliberate.',
       },
       {
         id: 3, region: 'Gazipur', regionBn: 'গাজীপুর', date: '2026-08-02', dateBn: '২ আগস্ট, ২০২৬',
-        cost: 11000, visits: 5, clarityScore: 1, difficultyScore: 92,
+        cost: 11000, visits: 5, rating: 1, ratingScore: 20,
         problems: ['Corruption', 'Multiple visits', 'Legal complexity'],
         comment: 'My uncle\'s inheritance case required a court order before the land office would even accept the application. 4 months and still not done.',
       },
       {
         id: 4, region: 'Sylhet', regionBn: 'সিলেট', date: '2026-07-21', dateBn: '২১ জুলাই, ২০২৬',
-        cost: 8500, visits: 4, clarityScore: 2, difficultyScore: 82,
+        cost: 8500, visits: 4, rating: 2, ratingScore: 40,
         problems: ['Long wait', 'Unclear fees'],
         comment: 'Hired a broker (dalal) for BDT 3,000 on top of official fees. Even with help, it took 3 months. Without a broker, I cannot imagine how anyone manages.',
       },
       {
         id: 5, region: 'Dhaka', regionBn: 'ঢাকা', date: '2026-08-17', dateBn: '১৭ আগস্ট, ২০২৬',
-        cost: 15000, visits: 7, clarityScore: 1, difficultyScore: 98,
+        cost: 15000, visits: 7, rating: 1, ratingScore: 20,
         problems: ['Corruption', 'Extreme delays', 'Complex docs', 'Multiple visits'],
         comment: 'The most corrupt process I have ever encountered. Every office visit revealed a new requirement. Staff openly hinted at "service charges" to speed things up.',
       },
@@ -739,7 +739,7 @@ export const services: Service[] = [
     description: 'Obtain a police clearance certificate for various purposes.',
     descriptionBn: 'বিভিন্ন উদ্দেশ্যে পুলিশ ক্লিয়ারেন্স সার্টিফিকেট সংগ্রহ করুন।',
     reportsCount: 0, avgDays: 0, avgVisits: 0, costRange: '', costRangeBn: '',
-    difficultyScore: 0, difficultyLabel: 'Easy',
+    ratingScore: 0, ratingLabel: 'Average',
     topProblems: [], officialSteps: [], communityReality: [], regionalComparison: [], experiences: [],
     officialInfo: { requiredDocs: [], requiredDocsBn: [], steps: [], stepsBn: [], fee: '', feeBn: '', processingTime: '', processingTimeBn: '' },
   },
@@ -749,7 +749,7 @@ export const services: Service[] = [
     description: 'Apply for or renew your Tax Identification Number.',
     descriptionBn: 'আপনার ট্যাক্স আইডেন্টিফিকেশন নম্বরের জন্য আবেদন করুন বা নবীকরণ করুন।',
     reportsCount: 0, avgDays: 0, avgVisits: 0, costRange: '', costRangeBn: '',
-    difficultyScore: 0, difficultyLabel: 'Easy',
+    ratingScore: 0, ratingLabel: 'Average',
     topProblems: [], officialSteps: [], communityReality: [], regionalComparison: [], experiences: [],
     officialInfo: { requiredDocs: [], requiredDocsBn: [], steps: [], stepsBn: [], fee: '', feeBn: '', processingTime: '', processingTimeBn: '' },
   },

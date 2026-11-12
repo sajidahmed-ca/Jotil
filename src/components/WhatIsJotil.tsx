@@ -6,15 +6,15 @@ export default function WhatIsJotil() {
       icon: <Building2 className="h-8 w-8" />,
       title: 'Official Information',
       desc: 'What the government website says you need — documents, fees, and processing time.',
-      color: 'bg-blue-50 border-blue-200 text-blue-700',
-      iconBg: 'bg-blue-100 text-blue-600',
+      color: 'bg-primary-50 border-primary-200 text-primary-800',
+      iconBg: 'bg-primary-100 text-primary-700',
     },
     {
       icon: <Users className="h-8 w-8" />,
       title: 'Community Reality',
       desc: 'What people actually experience — real reports from real citizens across Bangladesh.',
       color: 'bg-accent-50 border-accent-200 text-accent-700',
-      iconBg: 'bg-accent-100 text-accent-600',
+      iconBg: 'bg-accent-100 text-accent-700',
     },
     {
       icon: <Lightbulb className="h-8 w-8" />,
@@ -29,7 +29,7 @@ export default function WhatIsJotil() {
     <section className="section-padding bg-slate-50" id="how-it-works">
       <div className="container-custom">
         <div className="text-center max-w-2xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-primary-900">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
             What is Jotil?
           </h2>
           <p className="mt-3 text-slate-600 text-lg">
@@ -49,7 +49,7 @@ export default function WhatIsJotil() {
               <h3 className="mt-4 text-lg font-bold">
                 {card.title}
               </h3>
-              <p className="mt-2 text-sm opacity-80 leading-relaxed">
+              <p className="mt-2 text-sm leading-relaxed">
                 {card.desc}
               </p>
             </div>
